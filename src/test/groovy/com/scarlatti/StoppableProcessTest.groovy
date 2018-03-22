@@ -7,6 +7,7 @@ import spock.lang.Specification
 
 import javax.swing.JOptionPane
 import java.awt.Color
+import java.nio.file.Paths
 
 /**
  * ______    __                         __           ____             __     __  __  _
@@ -36,7 +37,7 @@ class StoppableProcessTest extends Specification {
     }
 
     private void startProcess() {
-        ProcessBuilder processBuilder = new ProcessBuilder("C:\\Users\\pc\\IdeaProjects\\stoppable-process\\gradlew.bat", "devServer")
+        ProcessBuilder processBuilder = new ProcessBuilder(Paths.get(System.getProperty("com.scarlatti.projectDir"), "gradlew.bat").toString(), "devServer")
         processBuilder.redirectError()
         process = processBuilder.start()
 

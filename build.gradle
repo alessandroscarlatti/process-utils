@@ -40,6 +40,8 @@ task devServer(group: 'application') {
 
 test {
 	exclude '**/integration/**'
+
+	systemProperty('com.scarlatti.projectDir', project.projectDir.absolutePath)
 }
 
 task integrationTest(type: Test, group: 'verification') {
