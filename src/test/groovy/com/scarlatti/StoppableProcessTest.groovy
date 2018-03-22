@@ -59,12 +59,18 @@ class StoppableProcessTest extends Specification {
     }
 
     void stopProcessInteractively() {
-        int pid = new Integer(JOptionPane.showInputDialog("PID:"));
-        ProcessUtil.stopProcess(pid);
+        int pid = new Integer(JOptionPane.showInputDialog("PID:"))
+        ProcessUtil.stopProcess(pid)
     }
 
     void stopProcessAutomatically() {
         ProcessUtil.stopProcess(process)
+    }
+
+    @Test
+    "try ctrl C"() {
+        expect:
+            ProcessUtil.stopProcessWithCtrlC(0)
     }
 
 

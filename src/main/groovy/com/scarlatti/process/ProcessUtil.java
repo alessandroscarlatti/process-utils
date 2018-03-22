@@ -3,6 +3,7 @@ package com.scarlatti.process;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.platform.win32.Wincon;
 
 import java.lang.reflect.Field;
 
@@ -47,15 +48,21 @@ public class ProcessUtil {
     }
 
     public static void stopProcess(long pid) {
-//        Kernel32 kernel = Kernel32.INSTANCE;
-//        kernel.GenerateConsoleCtrlEvent(Wincon.CTRL_C_EVENT, pid);
-
         try {
             ProcessBuilder builder = new ProcessBuilder("taskkill", "/f", "/t", "/pid", String.valueOf(pid));
             Process process = builder.start();
             process.waitFor();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to stop process.", e);
+        }
+    }
+
+    public static void stopProcessWithCtrlC(long pid) {
+        Kernel32 kernel = Kernel32.INSTANCE;
+        boolean success = kernel.GenerateConsoleCtrlEvent(Wincon.CTRL_C_EVENT, (int)pid);
+
+        if (!success) {
+            throw new RuntimeException("Unable to send Ctrl+C to process " + pid);
         }
     }
 }
