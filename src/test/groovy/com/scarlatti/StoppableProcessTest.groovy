@@ -1,6 +1,6 @@
 package com.scarlatti
 
-import com.scarlatti.stoppableProcess.ProcessUtil
+import com.scarlatti.process.ProcessUtil
 import com.scarlatti.taskLauncher.GuiTaskLauncher
 import org.junit.Test
 import spock.lang.Specification
