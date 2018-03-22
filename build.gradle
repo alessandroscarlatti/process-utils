@@ -1,0 +1,61 @@
+import java.nio.file.Paths
+
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+/**
+ * Use this task to run the web application.
+ * The task will add web dependencies to the classpath.
+ * Otherwise, :bootRun will only run the command line application.
+ */
+task devServer(group: 'application') {
+	finalizedBy ':bootRun'
+	doLast {
+		dependencies {
+			compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+			compile 'org.springframework.boot:spring-boot-devtools'
+		}
+	}
+}
+
+test {
+	exclude '**/integration/**'
+}
+
+task integrationTest(type: Test, group: 'verification') {
+	include '**/integration/**'
+}
+
+
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-amqp'
+	compile 'org.codehaus.groovy:groovy-all:2.4.7'
+	compile group: 'net.java.dev.jna', name: 'jna', version: '4.5.1'
+	compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.5.1'
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+	testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+	testCompile 'cglib:cglib-nodep:2.2'
+	testCompile files(Paths.get(project.projectDir.absolutePath, "lib", "task-launcher.jar").toString())
+}
